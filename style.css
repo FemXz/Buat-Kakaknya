@@ -55,7 +55,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+    font-family: 'Fredoka One', 'Comic Neue', cursive, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   display: flex;
   justify-content: center;
