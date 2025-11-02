@@ -380,10 +380,13 @@ h1 {
     max-width: 100%;
   }
 
+
   .emoji-float {
     font-size: 1.5rem;
-    display: none;
+    display: block; /* tampilkan emoji di mobile */
   }
+
+
 
   h1 {
     font-size: 1.6rem;
