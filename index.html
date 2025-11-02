@@ -58,18 +58,7 @@
 
 </style>
 
-<script>
-// Tambahan untuk tombol mulai
-const overlay = document.getElementById('start-overlay');
-const startBtn = document.getElementById('start-btn');
 
-startBtn.addEventListener('click', () => {
-  startKasihMusic(); // panggil fungsi musik utama kamu
-  overlay.classList.add('hidden'); // sembunyikan overlay
-});
-
-
-</script>
   
   <style>
     * {
@@ -506,12 +495,25 @@ startBtn.addEventListener('click', () => {
 
   <!-- Audio elements untuk musik -->
   <audio id="audioKasih" preload="auto">
-    <source src="kasih.mpeg" type="audio/mpeg">
+    <source src="kasih.mp3" type="audio/mp3">
   </audio>
   <audio id="audioHappy" preload="auto">
-    <source src="happy.mpeg" type="audio/mpeg">
+    <source src="happy.mp3" type="audio/mp3">
   </audio>
 
+<script>
+// Tambahan untuk tombol mulai
+const overlay = document.getElementById('start-overlay');
+const startBtn = document.getElementById('start-btn');
+
+startBtn.addEventListener('click', () => {
+  startKasihMusic(); // panggil fungsi musik utama kamu
+  overlay.classList.add('hidden'); // sembunyikan overlay
+});
+
+
+</script>
+  
   <script>
     const WA_NUMBER = "6285771166153";
     const IG_USERNAME = "rifiansyhfemas";
