@@ -4,33 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ajakan Temenan Lucu!</title>
-  <!-- Link ke Font Awesome untuk ikon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Link ke file CSS eksternal -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Overlay awal untuk interaksi pertama -->
-  <div id="start-overlay">
-    <div class="overlay-content">
-      <h2>💌 Hai! Siap mulai?</h2>
-      <p>Klik tombol di bawah buat mulai perjalanan ini 🎶</p>
-      <button id="start-btn">Mulai 🎵</button>
-    </div>
+    <!-- Overlay awal -->
+<div id="start-overlay">
+  <div class="overlay-content">
+    <h2>💌 Hai! Siap mulai?</h2>
+    <p>Klik tombol di bawah buat mulai perjalanan ini 🎶</p>
+    <button id="start-btn">Mulai 🎵</button>
   </div>
+</div>
 
   <div class="container">
-    <!-- Floating Emojis -->
     <div class="emoji-float emoji-1">😎</div>
     <div class="emoji-float emoji-2">🎉</div>
     <div class="emoji-float emoji-3">😄</div>
     <div class="emoji-float emoji-4">🤣</div>
 
-    <!-- Konten Pertanyaan -->
     <div id="question-content">
       <div class="gif-container">
-        <!-- MENGGUNAKAN NAMA FILE GIF ASLI -->
         <img src="evil-cat-htb.webp" alt="Evil Cat" id="main-gif">
       </div>
       <h1 id="main-question">Haii! Mau jadi temen aku gak? 😊</h1>
@@ -45,14 +40,12 @@
       </div>
     </div>
 
-    <!-- Konten Sukses -->
-    <div class="success-message hidden" id="success-content">
+    <div class="success-message" id="success-content">
       <div class="success-icon">🎉</div>
       <h1 id="success-message">Yesss! Sekarang kita temen! 🎊</h1>
       <p class="subtitle">Yuk kita ngobrol dan jadi temen yang asik! 💫</p>
       
       <div class="gif-container">
-        <!-- MENGGUNAKAN NAMA FILE GIF ASLI -->
         <img src="kitty.gif" alt="Happy Kitty" id="success-gif">
       </div>
 
@@ -70,7 +63,6 @@
   <div id="toast">Notifikasi: Yeay! Sekarang kita temen! 🎉</div>
 
   <!-- Audio elements untuk musik -->
-  <!-- CATATAN: File audio 'kasih.mpeg' dan 'happy.mpeg' harus Anda sediakan di folder yang sama -->
   <audio id="audioKasih" preload="auto">
     <source src="kasih.mpeg" type="audio/mpeg">
   </audio>
@@ -78,7 +70,110 @@
     <source src="happy.mpeg" type="audio/mpeg">
   </audio>
 
-  <!-- Link ke file JavaScript eksternal -->
-  <script src="script.js"></script>
+
+  <script>
+    const overlay = document.getElementById('start-overlay');
+const startBtn = document.getElementById('start-btn');
+const audioKasih = document.getElementById('audioKasih');
+const audioHappy = document.getElementById('audioHappy');
+const btnYes = document.getElementById('btn-yes');
+const btnNo = document.getElementById('btn-no');
+let noClickCount = 0;
+let isPlayingKasih = false;
+let isPlayingHappy = false;
+
+// Set volume
+audioKasih.volume = 0.5;
+audioHappy.volume = 0.5;
+
+// Fungsi start musik kasih
+function startKasihMusic() {
+  if (!isPlayingKasih) {
+    audioKasih.currentTime = 0;
+    audioKasih.play().catch(err => console.log('Autoplay blocked:', err));
+    isPlayingKasih = true;
+  }
+}
+
+// Tombol overlay mulai
+startBtn.addEventListener('click', () => {
+  startKasihMusic();
+  overlay.classList.add('hidden');
+});
+
+// Fungsi toast
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = "show";
+  setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
+}
+
+// Fungsi confetti emoji
+function createConfetti() {
+  const emojis = ['🎉','🎊','😄','🤣','😎','👍','🙌','✨','💫','🌟'];
+  const container = document.querySelector('.container');
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'emoji-float';
+      confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.top = Math.random() * 100 + '%';
+      confetti.style.fontSize = (Math.random()*2+1)+'rem';
+      confetti.style.animation = `float ${Math.random()*3+2}s ease-in-out infinite`;
+      confetti.style.animationDelay = Math.random()*4+'s';
+      confetti.style.pointerEvents = 'none';
+      container.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 5000);
+    }, i*40);
+  }
+}
+
+// Tombol Yes
+btnYes.addEventListener('click', () => {
+  showToast("Yeay! Sekarang kita temenan 🎉");
+
+  audioKasih.pause();
+  isPlayingKasih = false;
+
+  audioHappy.currentTime = 0;
+  audioHappy.play().catch(err => console.log('Happy music error:', err));
+  isPlayingHappy = true;
+
+  document.getElementById('question-content').classList.add('hidden');
+  document.getElementById('success-content').classList.add('visible');
+
+  createConfetti();
+});
+
+// Tombol No bergerak
+btnNo.addEventListener('click', () => {
+  noClickCount++;
+  const container = document.querySelector('.container');
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = btnNo.getBoundingClientRect();
+  const maxX = Math.max(0, containerRect.width - btnRect.width - 40);
+  const maxY = Math.max(0, containerRect.height - btnRect.height - 40);
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  btnNo.style.position = 'absolute';
+  btnNo.style.transition = 'all 0.15s ease-out';
+  btnNo.style.left = randomX+'px';
+  btnNo.style.top = randomY+'px';
+
+  if (noClickCount === 1) btnNo.querySelector('span').textContent = 'Yakin gak? 🥺';
+  else if (noClickCount === 3) btnNo.querySelector('span').textContent = 'Coba lagi deh... 😢';
+  else if (noClickCount === 5) btnNo.querySelector('span').textContent = 'Aku sedih lho... 😭';
+  else if (noClickCount === 7) btnNo.querySelector('span').textContent = 'Pleaseeee! 🙏';
+  else if (noClickCount > 9) {
+    btnNo.style.display = 'none';
+    document.getElementById('main-question').textContent = 'Yah, kok gitu sih? 😢';
+    document.getElementById('subtitle-text').textContent = 'Klik "Iya Dong!" aja ya! Dijamin seru! 🎉';
+  }
+});
+
+  </script>
 </body>
 </html>
